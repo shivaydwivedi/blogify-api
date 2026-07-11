@@ -1,0 +1,52 @@
+services:
+  web:
+    build:
+      args:
+        REQUIREMENTS_FILE: requirements/production.txt
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DJANGO_ENVIRONMENT: production
+      DJANGO_DEBUG: "False"
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+    volumes: []
+    restart: unless-stopped
+
+  celery-worker:
+    build:
+      args:
+        REQUIREMENTS_FILE: requirements/production.txt
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DJANGO_ENVIRONMENT: production
+      DJANGO_DEBUG: "False"
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    volumes: []
+    restart: unless-stopped
+
+  celery-beat:
+    build:
+      args:
+        REQUIREMENTS_FILE: requirements/production.txt
+    environment:
+      DJANGO_SETTINGS_MODULE: config.settings.production
+      DJANGO_ENVIRONMENT: production
+      DJANGO_DEBUG: "False"
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      REDIS_URL: redis://redis:6379/0
+      CELERY_BROKER_URL: redis://redis:6379/0
+      CELERY_RESULT_BACKEND: redis://redis:6379/0
+    volumes: []
+    restart: unless-stopped
+
+  db:
+    restart: unless-stopped
+
+  redis:
+    restart: unless-stopped

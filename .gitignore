@@ -27,3 +27,5 @@ staticfiles/
 .DS_Store
 
 *.log
+
+celerybeat-schedule*

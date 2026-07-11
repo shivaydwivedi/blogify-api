@@ -27,6 +27,45 @@ Run Django checks:
 python manage.py check
 ```
 
+## Docker Development
+
+The local Docker environment runs Django, PostgreSQL, and Redis on a shared
+bridge network. Docker Compose automatically reads `.env` when present and
+falls back to safe development defaults for local startup.
+
+Start the environment:
+
+```bash
+docker compose up --build
+```
+
+Run Compose validation:
+
+```bash
+docker compose config
+```
+
+The Django container waits for PostgreSQL, runs migrations, executes Django
+system checks, and starts the development server on `0.0.0.0:8000`.
+
+Start only the Celery worker:
+
+```bash
+docker compose up celery-worker
+```
+
+Start only Celery Beat:
+
+```bash
+docker compose up celery-beat
+```
+
+Run the infrastructure verification task from a running web container:
+
+```bash
+docker compose exec web celery -A config call apps.core.tasks.background_ping
+```
+
 ## Settings
 
 The project uses a split settings package:
@@ -61,6 +100,14 @@ Important variables:
 - `POSTGRES_HOST`
 - `POSTGRES_PORT`
 - `POSTGRES_CONN_MAX_AGE`
+- `REDIS_URL`
+- `CELERY_BROKER_URL`
+- `CELERY_RESULT_BACKEND`
+- `CELERY_TASK_DEFAULT_QUEUE`
+- `CELERY_TASK_TIME_LIMIT`
+- `CELERY_TASK_SOFT_TIME_LIMIT`
+- `CELERY_WORKER_PREFETCH_MULTIPLIER`
+- `CELERY_RESULT_EXPIRES`
 
 Logging uses structured key-value console output by default. File logging is
 available through `DJANGO_ENABLE_FILE_LOGGING=True`, but console logging remains

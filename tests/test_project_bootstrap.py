@@ -3,6 +3,7 @@ from __future__ import annotations
 from django.conf import settings
 from django.core.management import call_command
 
+from apps.core.tasks import background_ping
 from config.settings.env import get_bool, get_int, get_list
 
 
@@ -26,3 +27,15 @@ def test_environment_helpers_parse_typed_values(monkeypatch) -> None:
     assert get_bool("BLOGIFY_TEST_BOOL") is True
     assert get_int("BLOGIFY_TEST_INT") == 42
     assert get_list("BLOGIFY_TEST_LIST") == ["alpha", "beta", "gamma"]
+
+
+def test_celery_configuration_loads() -> None:
+    assert settings.CELERY_BROKER_URL.startswith("redis://")
+    assert settings.CELERY_RESULT_BACKEND.startswith("redis://")
+    assert "core-background-ping" in settings.CELERY_BEAT_SCHEDULE
+
+
+def test_background_ping_task_executes_eagerly() -> None:
+    result = background_ping.delay()
+
+    assert result.get()["status"] == "ok"

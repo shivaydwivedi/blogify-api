@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from . import celery as celery_settings
 from . import rest_framework as drf_settings
 from . import spectacular as spectacular_settings
 from .env import BASE_DIR, get_bool, get_int, get_list, get_str
@@ -102,3 +103,23 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 REST_FRAMEWORK = drf_settings.REST_FRAMEWORK
 SPECTACULAR_SETTINGS = spectacular_settings.SPECTACULAR_SETTINGS
 LOGGING = build_logging_config(BASE_DIR)
+
+REDIS_URL = celery_settings.REDIS_URL
+CELERY_BROKER_URL = celery_settings.CELERY_BROKER_URL
+CELERY_RESULT_BACKEND = celery_settings.CELERY_RESULT_BACKEND
+CELERY_TASK_DEFAULT_QUEUE = celery_settings.CELERY_TASK_DEFAULT_QUEUE
+CELERY_TASK_TRACK_STARTED = celery_settings.CELERY_TASK_TRACK_STARTED
+CELERY_TASK_TIME_LIMIT = celery_settings.CELERY_TASK_TIME_LIMIT
+CELERY_TASK_SOFT_TIME_LIMIT = celery_settings.CELERY_TASK_SOFT_TIME_LIMIT
+CELERY_TASK_ACKS_LATE = celery_settings.CELERY_TASK_ACKS_LATE
+CELERY_TASK_REJECT_ON_WORKER_LOST = celery_settings.CELERY_TASK_REJECT_ON_WORKER_LOST
+CELERY_WORKER_PREFETCH_MULTIPLIER = celery_settings.CELERY_WORKER_PREFETCH_MULTIPLIER
+CELERY_WORKER_SEND_TASK_EVENTS = celery_settings.CELERY_WORKER_SEND_TASK_EVENTS
+CELERY_TASK_SEND_SENT_EVENT = celery_settings.CELERY_TASK_SEND_SENT_EVENT
+CELERY_TIMEZONE = celery_settings.CELERY_TIMEZONE
+CELERY_ENABLE_UTC = celery_settings.CELERY_ENABLE_UTC
+CELERY_RESULT_EXPIRES = celery_settings.CELERY_RESULT_EXPIRES
+CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP = (
+    celery_settings.CELERY_BROKER_CONNECTION_RETRY_ON_STARTUP
+)
+CELERY_BEAT_SCHEDULE = celery_settings.CELERY_BEAT_SCHEDULE
