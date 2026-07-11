@@ -2,34 +2,16 @@
 
 from __future__ import annotations
 
-import os
-from pathlib import Path
+from . import rest_framework as drf_settings
+from . import spectacular as spectacular_settings
+from .env import BASE_DIR, get_bool, get_int, get_list, get_str
+from .logging import build_logging_config
 
-from dotenv import load_dotenv
-
-BASE_DIR = Path(__file__).resolve().parents[2]
-
-load_dotenv(BASE_DIR / ".env")
-
-
-def env_bool(name: str, default: bool = False) -> bool:
-    value = os.getenv(name)
-    if value is None:
-        return default
-    return value.strip().lower() in {"1", "true", "yes", "on"}
-
-
-def env_list(name: str, default: tuple[str, ...] = ()) -> list[str]:
-    value = os.getenv(name)
-    if value is None or value.strip() == "":
-        return list(default)
-    return [item.strip() for item in value.split(",") if item.strip()]
-
-
-SECRET_KEY = os.getenv("DJANGO_SECRET_KEY", "unsafe-development-secret-key")
-DEBUG = env_bool("DJANGO_DEBUG", False)
-ALLOWED_HOSTS = env_list("DJANGO_ALLOWED_HOSTS", ("localhost", "127.0.0.1"))
-CSRF_TRUSTED_ORIGINS = env_list("DJANGO_CSRF_TRUSTED_ORIGINS")
+ENVIRONMENT = get_str("DJANGO_ENVIRONMENT", "development")
+SECRET_KEY = get_str("DJANGO_SECRET_KEY", "unsafe-development-secret-key")
+DEBUG = get_bool("DJANGO_DEBUG", False)
+ALLOWED_HOSTS = get_list("DJANGO_ALLOWED_HOSTS", ("localhost", "127.0.0.1"))
+CSRF_TRUSTED_ORIGINS = get_list("DJANGO_CSRF_TRUSTED_ORIGINS")
 
 LANGUAGE_CODE = "en-us"
 TIME_ZONE = "UTC"
@@ -82,11 +64,12 @@ TEMPLATES = [
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": os.getenv("POSTGRES_DB", "blogify"),
-        "USER": os.getenv("POSTGRES_USER", "blogify"),
-        "PASSWORD": os.getenv("POSTGRES_PASSWORD", "blogify"),
-        "HOST": os.getenv("POSTGRES_HOST", "localhost"),
-        "PORT": os.getenv("POSTGRES_PORT", "5432"),
+        "NAME": get_str("POSTGRES_DB", "blogify"),
+        "USER": get_str("POSTGRES_USER", "blogify"),
+        "PASSWORD": get_str("POSTGRES_PASSWORD", "blogify"),
+        "HOST": get_str("POSTGRES_HOST", "localhost"),
+        "PORT": get_int("POSTGRES_PORT", 5432),
+        "CONN_MAX_AGE": get_int("POSTGRES_CONN_MAX_AGE", 60),
     }
 }
 
@@ -116,51 +99,6 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
-REST_FRAMEWORK = {
-    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
-    "DEFAULT_RENDERER_CLASSES": [
-        "rest_framework.renderers.JSONRenderer",
-    ],
-    "DEFAULT_PARSER_CLASSES": [
-        "rest_framework.parsers.JSONParser",
-        "rest_framework.parsers.FormParser",
-        "rest_framework.parsers.MultiPartParser",
-    ],
-    "DEFAULT_FILTER_BACKENDS": [
-        "django_filters.rest_framework.DjangoFilterBackend",
-    ],
-}
-
-SPECTACULAR_SETTINGS = {
-    "TITLE": "Blogify API",
-    "DESCRIPTION": "REST API for a modern blogging platform.",
-    "VERSION": "0.1.0",
-    "SERVE_INCLUDE_SCHEMA": False,
-}
-
-LOGGING = {
-    "version": 1,
-    "disable_existing_loggers": False,
-    "formatters": {
-        "standard": {
-            "format": "%(asctime)s %(levelname)s %(name)s %(message)s",
-        },
-    },
-    "handlers": {
-        "console": {
-            "class": "logging.StreamHandler",
-            "formatter": "standard",
-        },
-    },
-    "root": {
-        "handlers": ["console"],
-        "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
-    },
-    "loggers": {
-        "django": {
-            "handlers": ["console"],
-            "level": os.getenv("DJANGO_LOG_LEVEL", "INFO"),
-            "propagate": False,
-        },
-    },
-}
+REST_FRAMEWORK = drf_settings.REST_FRAMEWORK
+SPECTACULAR_SETTINGS = spectacular_settings.SPECTACULAR_SETTINGS
+LOGGING = build_logging_config(BASE_DIR)
