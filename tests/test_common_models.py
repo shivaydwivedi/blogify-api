@@ -92,7 +92,10 @@ def test_hard_delete_removes_record(framework_model_table) -> None:
 @pytest.mark.django_db
 def test_audit_model_accepts_future_actor_references(framework_model_table) -> None:
     user_model = get_user_model()
-    user = user_model.objects.create_user(username="auditor")
+    user = user_model.objects.create_user(
+        email="auditor@example.com",
+        username="auditor",
+    )
 
     record = framework_model_table.all_objects.create(
         name="Example",

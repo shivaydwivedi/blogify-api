@@ -20,6 +20,7 @@ USE_I18N = True
 USE_TZ = True
 
 INSTALLED_APPS = [
+    "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
@@ -28,6 +29,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "django_filters",
+    "apps.accounts",
     "apps.common",
     "apps.core",
 ]
@@ -99,6 +101,7 @@ MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
+AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = drf_settings.REST_FRAMEWORK
 SPECTACULAR_SETTINGS = spectacular_settings.SPECTACULAR_SETTINGS
