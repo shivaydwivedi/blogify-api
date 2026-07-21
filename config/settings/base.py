@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     "apps.accounts",
     "apps.common",
     "apps.content",
+    "apps.posts",
     "apps.core",
 ]
 
