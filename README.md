@@ -90,10 +90,19 @@ Important variables:
 - `DJANGO_DEBUG`
 - `DJANGO_ALLOWED_HOSTS`
 - `DJANGO_CSRF_TRUSTED_ORIGINS`
+- `DJANGO_SECURE_SSL_REDIRECT`
+- `DJANGO_SECURE_HSTS_SECONDS`
+- `DJANGO_SECURE_HSTS_INCLUDE_SUBDOMAINS`
+- `DJANGO_SECURE_HSTS_PRELOAD`
 - `DJANGO_LOG_LEVEL`
 - `DJANGO_SECURITY_LOG_LEVEL`
 - `DJANGO_ENABLE_FILE_LOGGING`
 - `DJANGO_LOG_FILE_PATH`
+- `DJANGO_DEFAULT_FROM_EMAIL`
+- `BLOGIFY_API_BASE_URL`
+- `EMAIL_VERIFICATION_TOKEN_MAX_AGE_SECONDS`
+- `APP_VERSION`
+- `DATABASE_URL`
 - `POSTGRES_DB`
 - `POSTGRES_USER`
 - `POSTGRES_PASSWORD`
@@ -108,10 +117,35 @@ Important variables:
 - `CELERY_TASK_SOFT_TIME_LIMIT`
 - `CELERY_WORKER_PREFETCH_MULTIPLIER`
 - `CELERY_RESULT_EXPIRES`
+- `CLOUDINARY_URL`
+- `EMAIL_HOST`
+- `EMAIL_PORT`
+- `EMAIL_HOST_USER`
+- `EMAIL_HOST_PASSWORD`
+- `EMAIL_USE_TLS`
+- `EMAIL_USE_SSL`
 
 Logging uses structured key-value console output by default. File logging is
 available through `DJANGO_ENABLE_FILE_LOGGING=True`, but console logging remains
 the default because it works cleanly with containers and process managers.
+
+## Production Deployment
+
+Production settings support Render, Neon PostgreSQL, Upstash Redis,
+Cloudinary, and Brevo SMTP through environment variables.
+
+- Use `DJANGO_SETTINGS_MODULE=config.settings.production`.
+- Set `DATABASE_URL` to the Neon PostgreSQL connection string when available.
+  The existing `POSTGRES_*` variables remain supported as a fallback.
+- Set `REDIS_URL`, `CELERY_BROKER_URL`, and `CELERY_RESULT_BACKEND` to Upstash
+  Redis URLs.
+- Set `CLOUDINARY_URL` so uploaded media uses Cloudinary in production.
+- Set the Brevo SMTP variables `EMAIL_HOST`, `EMAIL_PORT`, `EMAIL_HOST_USER`,
+  `EMAIL_HOST_PASSWORD`, `EMAIL_USE_TLS`, and `DJANGO_DEFAULT_FROM_EMAIL`.
+
+Static files are served by WhiteNoise with compressed manifest storage, so
+Nginx is not required for static assets. The unversioned health endpoint is
+available at `/health/` and reports database and Redis readiness.
 
 ## Documentation
 

@@ -30,6 +30,8 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "cloudinary",
+    "cloudinary_storage",
     "rest_framework",
     "drf_spectacular",
     "django_filters",
@@ -47,6 +49,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
@@ -111,8 +114,18 @@ STATIC_ROOT = BASE_DIR / "staticfiles"
 MEDIA_URL = "media/"
 MEDIA_ROOT = BASE_DIR / "media"
 
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
+
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
+APP_VERSION = get_str("APP_VERSION", "1.0.0")
 DEFAULT_FROM_EMAIL = get_str("DJANGO_DEFAULT_FROM_EMAIL", "noreply@blogify.local")
 BLOGIFY_API_BASE_URL = get_str("BLOGIFY_API_BASE_URL", "http://localhost:8000")
 EMAIL_VERIFICATION_TOKEN_MAX_AGE_SECONDS = get_int(
