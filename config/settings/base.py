@@ -38,6 +38,9 @@ INSTALLED_APPS = [
     "apps.common",
     "apps.content",
     "apps.posts",
+    "apps.comments",
+    "apps.likes",
+    "apps.bookmarks",
     "apps.core",
 ]
 

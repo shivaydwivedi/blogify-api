@@ -27,6 +27,8 @@ class PostListSerializer(serializers.ModelSerializer):
     author = AuthorSerializer(read_only=True)
     category = CategorySerializer(read_only=True)
     tags = TagSerializer(many=True, read_only=True)
+    like_count = serializers.SerializerMethodField()
+    is_liked = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -43,17 +45,44 @@ class PostListSerializer(serializers.ModelSerializer):
             "published_at",
             "reading_time",
             "view_count",
+            "like_count",
+            "is_liked",
             "created_at",
             "updated_at",
         )
         read_only_fields = fields
 
+    def get_like_count(self, obj: Post) -> int:
+        return obj.likes.count()
+
+    def get_is_liked(self, obj: Post) -> bool:
+        request = self.context.get("request")
+        user = getattr(request, "user", None)
+        if not getattr(user, "is_authenticated", False):
+            return False
+
+        return obj.likes.filter(user=user).exists()
+
 
 class PostDetailSerializer(PostListSerializer):
     """Serialize full post details."""
 
+    is_bookmarked = serializers.SerializerMethodField()
+
     class Meta(PostListSerializer.Meta):
-        fields = PostListSerializer.Meta.fields + ("content", "featured_image")
+        fields = PostListSerializer.Meta.fields + (
+            "content",
+            "featured_image",
+            "is_bookmarked",
+        )
+
+    def get_is_bookmarked(self, obj: Post) -> bool:
+        request = self.context.get("request")
+        user = getattr(request, "user", None)
+        if not getattr(user, "is_authenticated", False):
+            return False
+
+        return obj.bookmarks.filter(user=user).exists()
 
 
 class PostWriteSerializer(serializers.ModelSerializer):
