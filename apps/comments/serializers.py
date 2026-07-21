@@ -74,11 +74,16 @@ class CommentSerializer(serializers.ModelSerializer):
         return attrs
 
     def create(self, validated_data: dict) -> Comment:
-        return Comment.objects.create(
+        comment = Comment.objects.create(
             post=self.context["post"],
             author=self.context["request"].user,
             **validated_data,
         )
+
+        from apps.notifications.services import create_comment_notification
+
+        create_comment_notification(comment)
+        return comment
 
 
 class CommentReplySerializer(serializers.ModelSerializer):

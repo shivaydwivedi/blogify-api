@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <body style="font-family: Arial, sans-serif; color: #111827; line-height: 1.5;">
+    <p>Hi {{ user.first_name|default:user.username }},</p>
+    <p>Welcome to Blogify. Please verify your account to finish setting up your profile.</p>
+    <p>
+      <a
+        href="{{ verification_url }}"
+        style="display: inline-block; padding: 10px 16px; background: #2563eb; color: #ffffff; text-decoration: none; border-radius: 4px;"
+      >
+        Verify your Blogify account
+      </a>
+    </p>
+    <p>If the button does not work, copy and paste this URL into your browser:</p>
+    <p><a href="{{ verification_url }}">{{ verification_url }}</a></p>
+    <p>This link expires automatically. If you did not create a Blogify account, you can ignore this email.</p>
+  </body>
+</html>

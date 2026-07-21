@@ -34,6 +34,11 @@ class PostLikeAPIView(BaseAPIView):
             )
 
         like, created = Like.objects.get_or_create(user=request.user, post=post)
+        if created:
+            from apps.notifications.services import create_post_liked_notification
+
+            create_post_liked_notification(like)
+
         return self.success_response(
             {"liked": True, "like_count": post.likes.count(), "created": created},
             status_code=status.HTTP_201_CREATED if created else status.HTTP_200_OK,

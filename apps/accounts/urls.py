@@ -11,6 +11,8 @@ from apps.accounts.views import (
     LogoutAPIView,
     RefreshTokenAPIView,
     RegisterAPIView,
+    ResendVerificationAPIView,
+    VerifyEmailAPIView,
 )
 
 app_name = "accounts"
@@ -22,4 +24,10 @@ urlpatterns = [
     path("logout/", LogoutAPIView.as_view(), name="logout"),
     path("me/", CurrentUserAPIView.as_view(), name="me"),
     path("change-password/", ChangePasswordAPIView.as_view(), name="change-password"),
+    path(
+        "resend-verification/",
+        ResendVerificationAPIView.as_view(),
+        name="resend-verification",
+    ),
+    path("verify-email/", VerifyEmailAPIView.as_view(), name="verify-email"),
 ]

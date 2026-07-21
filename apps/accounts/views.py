@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from django.contrib.auth import get_user_model
+from django.core import signing
 from drf_spectacular.utils import OpenApiResponse, extend_schema
 from rest_framework import permissions, status
 from rest_framework_simplejwt.exceptions import TokenError
@@ -14,8 +16,12 @@ from apps.accounts.serializers import (
     RegisterSerializer,
     UserSerializer,
 )
+from apps.accounts.tasks import send_verification_email
+from apps.accounts.tokens import load_email_verification_token
 from apps.common.api import BaseAPIView
 from apps.common.responses import APIResponse
+
+User = get_user_model()
 
 
 def build_token_payload(user) -> dict[str, str]:
@@ -43,6 +49,7 @@ class RegisterAPIView(BaseAPIView):
         serializer = self.serializer_class(data=request.data)
         serializer.is_valid(raise_exception=True)
         user = serializer.save()
+        send_verification_email.delay(str(user.id))
 
         return self.success_response(
             UserSerializer(user, context={"request": request}).data,
@@ -169,3 +176,78 @@ class ChangePasswordAPIView(BaseAPIView):
         serializer.save()
 
         return self.success_response({"detail": "Password changed successfully."})
+
+
+class ResendVerificationAPIView(BaseAPIView):
+    """Queue another verification email for the authenticated user."""
+
+    permission_classes = (permissions.IsAuthenticated,)
+    serializer_class = UserSerializer
+
+    @extend_schema(
+        request=None,
+        responses={200: OpenApiResponse(description="Verification email queued.")},
+        tags=["Authentication"],
+    )
+    def post(self, request):
+        if request.user.email_verified:
+            return self.success_response({"detail": "Email is already verified."})
+
+        send_verification_email.delay(str(request.user.id))
+        return self.success_response({"detail": "Verification email queued."})
+
+
+class VerifyEmailAPIView(BaseAPIView):
+    """Verify a user's email address using a signed token."""
+
+    permission_classes = (permissions.AllowAny,)
+    serializer_class = UserSerializer
+
+    @extend_schema(
+        parameters=[],
+        responses={200: OpenApiResponse(description="Email verified.")},
+        tags=["Authentication"],
+    )
+    def get(self, request):
+        token = request.query_params.get("token")
+        if not token:
+            return self.error_response(
+                code="validation_error",
+                message="Verification token is required.",
+                status_code=status.HTTP_400_BAD_REQUEST,
+                details={"token": ["This query parameter is required."]},
+            )
+
+        try:
+            payload = load_email_verification_token(token)
+        except signing.SignatureExpired:
+            return self.error_response(
+                code="validation_error",
+                message="Verification token has expired.",
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+        except signing.BadSignature:
+            return self.error_response(
+                code="validation_error",
+                message="Verification token is invalid.",
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+
+        user = User.objects.filter(
+            pk=payload.get("user_id"),
+            email=payload.get("email"),
+        ).first()
+        if user is None or user.email_verified:
+            return self.error_response(
+                code="validation_error",
+                message="Verification token is invalid.",
+                status_code=status.HTTP_400_BAD_REQUEST,
+            )
+
+        user.email_verified = True
+        user.save(update_fields=("email_verified",))
+
+        from apps.notifications.services import create_email_verified_notification
+
+        create_email_verified_notification(user)
+        return self.success_response({"detail": "Email verified successfully."})

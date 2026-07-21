@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     "apps.comments",
     "apps.likes",
     "apps.bookmarks",
+    "apps.notifications",
     "apps.core",
 ]
 
@@ -112,6 +113,12 @@ MEDIA_ROOT = BASE_DIR / "media"
 
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
+DEFAULT_FROM_EMAIL = get_str("DJANGO_DEFAULT_FROM_EMAIL", "noreply@blogify.local")
+BLOGIFY_API_BASE_URL = get_str("BLOGIFY_API_BASE_URL", "http://localhost:8000")
+EMAIL_VERIFICATION_TOKEN_MAX_AGE_SECONDS = get_int(
+    "EMAIL_VERIFICATION_TOKEN_MAX_AGE_SECONDS",
+    86400,
+)
 
 REST_FRAMEWORK = drf_settings.REST_FRAMEWORK
 SIMPLE_JWT = simple_jwt_settings.SIMPLE_JWT

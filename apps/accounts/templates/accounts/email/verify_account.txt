@@ -1,0 +1,7 @@
+Hi {{ user.first_name|default:user.username }},
+
+Welcome to Blogify. Verify your account by opening this link:
+
+{{ verification_url }}
+
+This link expires automatically. If you did not create a Blogify account, you can ignore this email.
