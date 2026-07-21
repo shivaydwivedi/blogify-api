@@ -85,6 +85,7 @@ def reject_default_secret(secret_key: str) -> None:
     unsafe_values = {
         "change-me-in-development",
         "unsafe-development-secret-key",
+        "unsafe-development-secret-key-change-me",
     }
     if secret_key in unsafe_values:
         raise ImproperlyConfigured("DJANGO_SECRET_KEY must be changed for production.")

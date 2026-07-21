@@ -4,12 +4,16 @@ from __future__ import annotations
 
 from . import celery as celery_settings
 from . import rest_framework as drf_settings
+from . import simple_jwt as simple_jwt_settings
 from . import spectacular as spectacular_settings
 from .env import BASE_DIR, get_bool, get_int, get_list, get_str
 from .logging import build_logging_config
 
 ENVIRONMENT = get_str("DJANGO_ENVIRONMENT", "development")
-SECRET_KEY = get_str("DJANGO_SECRET_KEY", "unsafe-development-secret-key")
+SECRET_KEY = get_str(
+    "DJANGO_SECRET_KEY",
+    "unsafe-development-secret-key-change-me",
+)
 DEBUG = get_bool("DJANGO_DEBUG", False)
 ALLOWED_HOSTS = get_list("DJANGO_ALLOWED_HOSTS", ("localhost", "127.0.0.1"))
 CSRF_TRUSTED_ORIGINS = get_list("DJANGO_CSRF_TRUSTED_ORIGINS")
@@ -29,6 +33,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "drf_spectacular",
     "django_filters",
+    "rest_framework_simplejwt.token_blacklist",
     "apps.accounts",
     "apps.common",
     "apps.core",
@@ -104,6 +109,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 AUTH_USER_MODEL = "accounts.User"
 
 REST_FRAMEWORK = drf_settings.REST_FRAMEWORK
+SIMPLE_JWT = simple_jwt_settings.SIMPLE_JWT
 SPECTACULAR_SETTINGS = spectacular_settings.SPECTACULAR_SETTINGS
 LOGGING = build_logging_config(BASE_DIR)
 
