@@ -1,0 +1,1 @@
+"""Content taxonomy domain package."""
