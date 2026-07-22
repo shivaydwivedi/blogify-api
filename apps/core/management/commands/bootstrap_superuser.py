@@ -10,6 +10,12 @@ from django.core.management.base import BaseCommand
 
 logger = logging.getLogger(__name__)
 
+SUPERUSER_ENV_VARS = (
+    "DJANGO_SUPERUSER_USERNAME",
+    "DJANGO_SUPERUSER_EMAIL",
+    "DJANGO_SUPERUSER_PASSWORD",
+)
+
 
 class Command(BaseCommand):
     """Create a superuser from environment variables when none exists."""
@@ -23,12 +29,24 @@ class Command(BaseCommand):
             self.log_message("Superuser already exists.")
             return
 
-        username = os.environ.get("DJANGO_SUPERUSER_USERNAME")
-        email = os.environ.get("DJANGO_SUPERUSER_EMAIL")
-        password = os.environ.get("DJANGO_SUPERUSER_PASSWORD")
+        username = os.environ.get("DJANGO_SUPERUSER_USERNAME", "").strip()
+        email = os.environ.get("DJANGO_SUPERUSER_EMAIL", "").strip()
+        password = os.environ.get("DJANGO_SUPERUSER_PASSWORD", "")
 
-        if not username or not email or not password:
-            self.log_message("Skipping superuser creation.")
+        missing = [
+            name
+            for name, value in zip(
+                SUPERUSER_ENV_VARS,
+                (username, email, password),
+                strict=True,
+            )
+            if not value
+        ]
+        if missing:
+            self.log_message(
+                "Skipping superuser creation. Missing environment variables: "
+                f"{', '.join(missing)}"
+            )
             return
 
         user_model.objects.create_superuser(

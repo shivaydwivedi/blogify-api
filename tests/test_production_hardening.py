@@ -59,7 +59,11 @@ def test_bootstrap_superuser_skips_when_environment_is_missing(
 
     call_command("bootstrap_superuser", stdout=output)
 
-    assert output.getvalue().strip() == "Skipping superuser creation."
+    assert output.getvalue().strip() == (
+        "Skipping superuser creation. Missing environment variables: "
+        "DJANGO_SUPERUSER_USERNAME, DJANGO_SUPERUSER_EMAIL, "
+        "DJANGO_SUPERUSER_PASSWORD"
+    )
     assert django_user_model.objects.filter(is_superuser=True).count() == 0
 
 
