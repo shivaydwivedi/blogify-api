@@ -47,6 +47,7 @@ else:
 PY
 
 python manage.py migrate --noinput
+python manage.py bootstrap_superuser
 if is_production; then
     python manage.py collectstatic --noinput
 fi
