@@ -15,15 +15,6 @@
 
 | Resource | URL |
 | --- | --- |
-
-| **Production API** | https://blogify-api-0ghm.onrender.com/ |
-| **Swagger UI** | https://blogify-api-0ghm.onrender.com/api/v1/docs/ |
-| **OpenAPI Schema** | https://blogify-api-0ghm.onrender.com/api/v1/schema/ |
-| **Health Check** | https://blogify-api-0ghm.onrender.com/health/|
-| **Django Admin** |https://blogify-api-0ghm.onrender.com/admin/ |
-
-
-=======
 | Production API | `https://blogify-api-0ghm.onrender.com/` |
 | Swagger UI | `https://blogify-api-0ghm.onrender.com/api/v1/docs/` |
 | OpenAPI Schema | `https://blogify-api-0ghm.onrender.com/api/v1/schema/` |
@@ -35,7 +26,6 @@ Production base URL:
 ```text
 https://blogify-api-0ghm.onrender.com
 ```
->>>>>>> 3c8237b (docs: improve API documentation and endpoint reference)
 
 ## Overview
 
@@ -831,8 +821,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-
-- GitHub: [`https://github.com/<your-username>](https://github.com/shivaydwivedi)`
-- LinkedIn: `www.linkedin.com/in/shivay-dwivedi-54785b304`
+- Maintainer: Shivay Dwivedi
+- GitHub: [shivaydwivedi](https://github.com/shivaydwivedi)
+- LinkedIn: [shivay-dwivedi-54785b304](https://www.linkedin.com/in/shivay-dwivedi-54785b304)
 - Email: `shivayforwork@gmail.com`
-
+- Project issues and discussions can be managed through the repository hosting platform.
