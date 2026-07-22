@@ -1,8 +1,5 @@
 services:
   web:
-    build:
-      args:
-        REQUIREMENTS_FILE: requirements/production.txt
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.production
       DJANGO_ENVIRONMENT: production
@@ -14,9 +11,6 @@ services:
     restart: unless-stopped
 
   celery-worker:
-    build:
-      args:
-        REQUIREMENTS_FILE: requirements/production.txt
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.production
       DJANGO_ENVIRONMENT: production
@@ -30,9 +24,6 @@ services:
     restart: unless-stopped
 
   celery-beat:
-    build:
-      args:
-        REQUIREMENTS_FILE: requirements/production.txt
     environment:
       DJANGO_SETTINGS_MODULE: config.settings.production
       DJANGO_ENVIRONMENT: production

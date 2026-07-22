@@ -1,8 +1,6 @@
 x-app-build: &app-build
   context: .
   dockerfile: Dockerfile
-  args:
-    REQUIREMENTS_FILE: requirements/development.txt
 
 x-django-environment: &django-environment
   DJANGO_SETTINGS_MODULE: ${DJANGO_SETTINGS_MODULE:-config.settings.development}

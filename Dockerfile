@@ -12,9 +12,9 @@ RUN addgroup --system django \
 
 COPY requirements/ ./requirements/
 
-ARG REQUIREMENTS_FILE=requirements/development.txt
 RUN pip install --upgrade pip \
-    && pip install -r "${REQUIREMENTS_FILE}"
+    && pip install -r requirements/base.txt \
+    && pip install -r requirements/production.txt
 
 COPY scripts/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
