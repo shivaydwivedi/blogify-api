@@ -774,6 +774,6 @@ The repository contains a `LICENSE` file, but it is currently empty. Choose and 
 
 ## Contact
 
-- GitHub: `https://github.com/<your-username>`
-- LinkedIn: `https://www.linkedin.com/in/<your-profile>`
-- Email: `you@example.com`
+- GitHub: [`https://github.com/<your-username>](https://github.com/shivaydwivedi)`
+- LinkedIn: `www.linkedin.com/in/shivay-dwivedi-54785b304`
+- Email: `shivayforwork@gmail.com`
