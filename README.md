@@ -102,6 +102,7 @@ Important variables:
 - `BLOGIFY_API_BASE_URL`
 - `EMAIL_VERIFICATION_TOKEN_MAX_AGE_SECONDS`
 - `APP_VERSION`
+- `GUNICORN_WORKERS`
 - `DATABASE_URL`
 - `POSTGRES_DB`
 - `POSTGRES_USER`
@@ -109,6 +110,7 @@ Important variables:
 - `POSTGRES_HOST`
 - `POSTGRES_PORT`
 - `POSTGRES_CONN_MAX_AGE`
+- `POSTGRES_SSL_REQUIRE`
 - `REDIS_URL`
 - `CELERY_BROKER_URL`
 - `CELERY_RESULT_BACKEND`
@@ -136,7 +138,8 @@ Cloudinary, and Brevo SMTP through environment variables.
 
 - Use `DJANGO_SETTINGS_MODULE=config.settings.production`.
 - Set `DATABASE_URL` to the Neon PostgreSQL connection string when available.
-  The existing `POSTGRES_*` variables remain supported as a fallback.
+  The existing `POSTGRES_*` variables remain supported as a fallback. Database
+  connections require SSL by default when `DJANGO_ENVIRONMENT=production`.
 - Set `REDIS_URL`, `CELERY_BROKER_URL`, and `CELERY_RESULT_BACKEND` to Upstash
   Redis URLs.
 - Set `CLOUDINARY_URL` so uploaded media uses Cloudinary in production.
@@ -146,6 +149,10 @@ Cloudinary, and Brevo SMTP through environment variables.
 Static files are served by WhiteNoise with compressed manifest storage, so
 Nginx is not required for static assets. The unversioned health endpoint is
 available at `/health/` and reports database and Redis readiness.
+
+The default container startup waits for PostgreSQL, runs migrations, collects
+static files in production, runs Django checks, and starts Gunicorn. Passing a
+custom command to the container still bypasses the default startup sequence.
 
 ## Documentation
 

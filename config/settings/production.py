@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import dj_database_url
-
 from .base import *  # noqa: F401,F403
 from .env import (
     get_bool,
@@ -30,14 +28,7 @@ require_env_vars(
     )
 )
 
-DATABASE_URL = get_str("DATABASE_URL")
-if DATABASE_URL:
-    DATABASES["default"] = dj_database_url.parse(  # noqa: F405
-        DATABASE_URL,
-        conn_max_age=get_int("POSTGRES_CONN_MAX_AGE", 600),
-        ssl_require=True,
-    )
-else:
+if not get_str("DATABASE_URL"):
     require_env_vars(
         (
             "POSTGRES_DB",

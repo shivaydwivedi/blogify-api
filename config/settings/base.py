@@ -6,6 +6,7 @@ from . import celery as celery_settings
 from . import rest_framework as drf_settings
 from . import simple_jwt as simple_jwt_settings
 from . import spectacular as spectacular_settings
+from .database import build_database_config
 from .env import BASE_DIR, get_bool, get_int, get_list, get_str
 from .logging import build_logging_config
 
@@ -78,17 +79,7 @@ TEMPLATES = [
     }
 ]
 
-DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.postgresql",
-        "NAME": get_str("POSTGRES_DB", "blogify"),
-        "USER": get_str("POSTGRES_USER", "blogify"),
-        "PASSWORD": get_str("POSTGRES_PASSWORD", "blogify"),
-        "HOST": get_str("POSTGRES_HOST", "localhost"),
-        "PORT": get_int("POSTGRES_PORT", 5432),
-        "CONN_MAX_AGE": get_int("POSTGRES_CONN_MAX_AGE", 60),
-    }
-}
+DATABASES = build_database_config()
 
 AUTH_PASSWORD_VALIDATORS = [
     {
