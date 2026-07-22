@@ -15,11 +15,11 @@
 
 | Resource | URL |
 | --- | --- |
-| **Production API** | `https://blogify-api-0ghm.onrender.com/` |
-| **Swagger UI** | `https://blogify-api-0ghm.onrender.com/api/v1/docs/` |
-| **OpenAPI Schema** | `https://blogify-api-0ghm.onrender.com/api/v1/schema/` |
-| **Health Check** | `https://blogify-api-0ghm.onrender.com/health/` |
-| **Django Admin** | `https://blogify-api-0ghm.onrender.com/admin/` |
+| **Production API** | https://blogify-api-0ghm.onrender.com/ |
+| **Swagger UI** | https://blogify-api-0ghm.onrender.com/api/v1/docs/ |
+| **OpenAPI Schema** | https://blogify-api-0ghm.onrender.com/api/v1/schema/ |
+| **Health Check** | https://blogify-api-0ghm.onrender.com/health/|
+| **Django Admin** |https://blogify-api-0ghm.onrender.com/admin/ |
 
 ## Overview
 
