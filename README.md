@@ -15,7 +15,7 @@
 
 | Resource | URL |
 | --- | --- |
-<<<<<<< HEAD
+
 | **Production API** | https://blogify-api-0ghm.onrender.com/ |
 | **Swagger UI** | https://blogify-api-0ghm.onrender.com/api/v1/docs/ |
 | **OpenAPI Schema** | https://blogify-api-0ghm.onrender.com/api/v1/schema/ |
@@ -831,11 +831,8 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
-<<<<<<< HEAD
+
 - GitHub: [`https://github.com/<your-username>](https://github.com/shivaydwivedi)`
 - LinkedIn: `www.linkedin.com/in/shivay-dwivedi-54785b304`
 - Email: `shivayforwork@gmail.com`
-=======
-- Maintainer: Shivay Dwivedi
-- Project issues and discussions can be managed through the repository hosting platform.
->>>>>>> 4e633f0 (docs: adding License)
+
