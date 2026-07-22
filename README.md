@@ -15,6 +15,7 @@
 
 | Resource | URL |
 | --- | --- |
+<<<<<<< HEAD
 | **Production API** | https://blogify-api-0ghm.onrender.com/ |
 | **Swagger UI** | https://blogify-api-0ghm.onrender.com/api/v1/docs/ |
 | **OpenAPI Schema** | https://blogify-api-0ghm.onrender.com/api/v1/schema/ |
@@ -22,6 +23,19 @@
 | **Django Admin** |https://blogify-api-0ghm.onrender.com/admin/ |
 
 
+=======
+| Production API | `https://blogify-api-0ghm.onrender.com/` |
+| Swagger UI | `https://blogify-api-0ghm.onrender.com/api/v1/docs/` |
+| OpenAPI Schema | `https://blogify-api-0ghm.onrender.com/api/v1/schema/` |
+| Health Check | `https://blogify-api-0ghm.onrender.com/health/` |
+| Django Admin | `https://blogify-api-0ghm.onrender.com/admin/` |
+
+Production base URL:
+
+```text
+https://blogify-api-0ghm.onrender.com
+```
+>>>>>>> 3c8237b (docs: improve API documentation and endpoint reference)
 
 ## Overview
 
@@ -274,7 +288,7 @@ docker compose exec web celery -A config call apps.core.tasks.background_ping
 | `EMAIL_HOST_PASSWORD` | SMTP password | Yes for email | empty | Brevo SMTP key |
 | `EMAIL_USE_TLS` | SMTP TLS toggle | No | `True` | `True` |
 | `DJANGO_DEFAULT_FROM_EMAIL` | Sender email | Recommended | `noreply@blogify.local` | `noreply@example.com` |
-| `BLOGIFY_API_BASE_URL` | Base URL used in generated links | Recommended | `http://localhost:8000` | `https://your-render-service.onrender.com` |
+| `BLOGIFY_API_BASE_URL` | Base URL used in generated links | Recommended | `http://localhost:8000` | `https://blogify-api-0ghm.onrender.com` |
 | `EMAIL_VERIFICATION_TOKEN_MAX_AGE_SECONDS` | Verification token lifetime | No | `86400` | `86400` |
 | `DJANGO_SUPERUSER_USERNAME` | Optional startup superuser username | No | empty | `admin` |
 | `DJANGO_SUPERUSER_EMAIL` | Optional startup superuser email | No | empty | `admin@example.com` |
@@ -336,84 +350,127 @@ Error:
 
 ## Endpoint Reference
 
+Complete production endpoint reference for Blogify API v1.0.
+
+Base URL:
+
+```text
+https://blogify-api-0ghm.onrender.com
+```
+
+### Documentation and System
+
+| Feature | Method | Endpoint | Auth Required |
+| --- | --- | --- | --- |
+| Health Check | `GET` | `https://blogify-api-0ghm.onrender.com/health/` | No |
+| Swagger UI | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/docs/` | No |
+| OpenAPI Schema | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/schema/` | No |
+| Django Admin | `GET` | `https://blogify-api-0ghm.onrender.com/admin/` | Staff/superuser |
+
 ### Authentication
 
-| Method | URL | Description | Auth Required |
+| Feature | Method | Endpoint | Auth Required |
 | --- | --- | --- | --- |
-| `POST` | `/api/v1/auth/register/` | Register a user and queue verification email | No |
-| `POST` | `/api/v1/auth/login/` | Issue JWT access and refresh tokens | No |
-| `POST` | `/api/v1/auth/refresh/` | Refresh JWT token pair | No |
-| `POST` | `/api/v1/auth/logout/` | Blacklist refresh token | Yes |
-| `GET` | `/api/v1/auth/me/` | Return current user | Yes |
-| `PUT` | `/api/v1/auth/change-password/` | Change password | Yes |
-| `POST` | `/api/v1/auth/resend-verification/` | Queue another verification email | Yes |
-| `GET` | `/api/v1/auth/verify-email/?token=...` | Verify email address | No |
+| Register | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/auth/register/` | No |
+| Login | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/auth/login/` | No |
+| Refresh Token | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/auth/refresh/` | No |
+| Logout | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/auth/logout/` | Yes |
+| Current User | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/auth/me/` | Yes |
+| Change Password | `PUT` | `https://blogify-api-0ghm.onrender.com/api/v1/auth/change-password/` | Yes |
+| Resend Verification Email | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/auth/resend-verification/` | Yes |
+| Verify Email | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/auth/verify-email/?token=<token>` | No |
 
 ### Posts
 
-| Method | URL | Description | Auth Required |
+| Feature | Method | Endpoint | Auth Required |
 | --- | --- | --- | --- |
-| `GET` | `/api/v1/posts/` | List visible posts | No |
-| `POST` | `/api/v1/posts/` | Create post | Yes |
-| `GET` | `/api/v1/posts/{id}/` | Retrieve post detail | Conditional visibility |
-| `PUT` | `/api/v1/posts/{id}/` | Replace owned or staff-accessible post | Yes |
-| `PATCH` | `/api/v1/posts/{id}/` | Partially update owned or staff-accessible post | Yes |
-| `DELETE` | `/api/v1/posts/{id}/` | Delete owned or staff-accessible post | Yes |
+| List Posts | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/` | No |
+| Create Post | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/` | Yes |
+| Retrieve Post | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/` | Conditional visibility |
+| Update Post | `PUT` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/` | Yes |
+| Partial Update Post | `PATCH` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/` | Yes |
+| Delete Post | `DELETE` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/` | Yes |
 
 Supported post query parameters include `category`, `tag`, `author`, `status`, `featured`, `search`, `ordering`, `page`, and `page_size`.
 
-### Categories and Tags
-
-| Method | URL | Description | Auth Required |
-| --- | --- | --- | --- |
-| `GET` | `/api/v1/categories/` | List categories | No |
-| `POST` | `/api/v1/categories/` | Create category | Staff/admin |
-| `GET` | `/api/v1/categories/{id}/` | Retrieve category | No |
-| `PUT/PATCH` | `/api/v1/categories/{id}/` | Update category | Staff/admin |
-| `DELETE` | `/api/v1/categories/{id}/` | Delete category | Staff/admin |
-| `GET` | `/api/v1/tags/` | List tags | No |
-| `POST` | `/api/v1/tags/` | Create tag | Staff/admin |
-| `GET` | `/api/v1/tags/{id}/` | Retrieve tag | No |
-| `PUT/PATCH` | `/api/v1/tags/{id}/` | Update tag | Staff/admin |
-| `DELETE` | `/api/v1/tags/{id}/` | Delete tag | Staff/admin |
-
 ### Comments
 
-| Method | URL | Description | Auth Required |
+| Feature | Method | Endpoint | Auth Required |
 | --- | --- | --- | --- |
-| `GET` | `/api/v1/posts/{id}/comments/` | List comments for a published post | No |
-| `POST` | `/api/v1/posts/{id}/comments/` | Add comment or one-level reply | Yes |
-| `PUT/PATCH` | `/api/v1/comments/{id}/` | Update own comment | Yes |
-| `DELETE` | `/api/v1/comments/{id}/` | Delete own comment; staff can moderate any | Yes |
+| List Comments for a Post | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/comments/` | No |
+| Create Comment | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/comments/` | Yes |
+| Update Comment | `PUT` | `https://blogify-api-0ghm.onrender.com/api/v1/comments/{comment_id}/` | Yes |
+| Partial Update Comment | `PATCH` | `https://blogify-api-0ghm.onrender.com/api/v1/comments/{comment_id}/` | Yes |
+| Delete Comment | `DELETE` | `https://blogify-api-0ghm.onrender.com/api/v1/comments/{comment_id}/` | Yes |
 
-### Likes and Bookmarks
+Comments do not currently expose a standalone `GET /api/v1/comments/{comment_id}/` retrieve endpoint. Comment reads are available through the post comments collection.
 
-| Method | URL | Description | Auth Required |
+### Likes
+
+| Feature | Method | Endpoint | Auth Required |
 | --- | --- | --- | --- |
-| `POST` | `/api/v1/posts/{id}/like/` | Like a published post | Yes |
-| `DELETE` | `/api/v1/posts/{id}/like/` | Unlike a post | Yes |
-| `GET` | `/api/v1/bookmarks/` | List current user's bookmarks | Yes |
-| `POST` | `/api/v1/posts/{id}/bookmark/` | Bookmark a published post | Yes |
-| `DELETE` | `/api/v1/posts/{id}/bookmark/` | Remove bookmark | Yes |
+| Like Post | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/like/` | Yes |
+| Unlike Post | `DELETE` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/like/` | Yes |
 
-### Notifications, Admin, and Operations
+### Bookmarks
 
-| Method | URL | Description | Auth Required |
+| Feature | Method | Endpoint | Auth Required |
 | --- | --- | --- | --- |
-| `GET` | `/api/v1/notifications/` | List current user's notifications | Yes |
-| `PATCH` | `/api/v1/notifications/{id}/read/` | Mark one notification as read | Yes |
-| `PATCH` | `/api/v1/notifications/read-all/` | Mark all notifications as read | Yes |
-| `GET` | `/health/` | Check database and Redis readiness | No |
-| `GET` | `/admin/` | Django Admin | Staff/superuser |
-| `GET` | `/api/v1/docs/` | Swagger UI | No |
-| `GET` | `/api/v1/schema/` | OpenAPI schema | No |
+| List My Bookmarks | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/bookmarks/` | Yes |
+| Bookmark Post | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/bookmark/` | Yes |
+| Remove Bookmark | `DELETE` | `https://blogify-api-0ghm.onrender.com/api/v1/posts/{post_id}/bookmark/` | Yes |
+
+### Notifications
+
+| Feature | Method | Endpoint | Auth Required |
+| --- | --- | --- | --- |
+| List Notifications | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/notifications/` | Yes |
+| Mark Notification as Read | `PATCH` | `https://blogify-api-0ghm.onrender.com/api/v1/notifications/{notification_id}/read/` | Yes |
+| Mark All Notifications as Read | `PATCH` | `https://blogify-api-0ghm.onrender.com/api/v1/notifications/read-all/` | Yes |
+
+### Categories
+
+| Feature | Method | Endpoint | Auth Required |
+| --- | --- | --- | --- |
+| List Categories | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/categories/` | No |
+| Create Category | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/categories/` | Staff/admin |
+| Retrieve Category | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/categories/{category_id}/` | No |
+| Update Category | `PUT` | `https://blogify-api-0ghm.onrender.com/api/v1/categories/{category_id}/` | Staff/admin |
+| Partial Update Category | `PATCH` | `https://blogify-api-0ghm.onrender.com/api/v1/categories/{category_id}/` | Staff/admin |
+| Delete Category | `DELETE` | `https://blogify-api-0ghm.onrender.com/api/v1/categories/{category_id}/` | Staff/admin |
+
+### Tags
+
+| Feature | Method | Endpoint | Auth Required |
+| --- | --- | --- | --- |
+| List Tags | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/tags/` | No |
+| Create Tag | `POST` | `https://blogify-api-0ghm.onrender.com/api/v1/tags/` | Staff/admin |
+| Retrieve Tag | `GET` | `https://blogify-api-0ghm.onrender.com/api/v1/tags/{tag_id}/` | No |
+| Update Tag | `PUT` | `https://blogify-api-0ghm.onrender.com/api/v1/tags/{tag_id}/` | Staff/admin |
+| Partial Update Tag | `PATCH` | `https://blogify-api-0ghm.onrender.com/api/v1/tags/{tag_id}/` | Staff/admin |
+| Delete Tag | `DELETE` | `https://blogify-api-0ghm.onrender.com/api/v1/tags/{tag_id}/` | Staff/admin |
+
+### API Summary
+
+| Module | Endpoint Count |
+| --- | ---: |
+| Documentation and System | 4 |
+| Authentication | 8 |
+| Posts | 6 |
+| Comments | 5 |
+| Likes | 2 |
+| Bookmarks | 3 |
+| Notifications | 3 |
+| Categories | 6 |
+| Tags | 6 |
+| Total Implemented Endpoints | 43 |
 
 ## API Examples
 
 ### Register
 
 ```bash
-curl -X POST https://your-render-service.onrender.com/api/v1/auth/register/ \
+curl -X POST https://blogify-api-0ghm.onrender.com/api/v1/auth/register/ \
   -H "Content-Type: application/json" \
   -d '{
     "email": "reader@example.com",
@@ -428,7 +485,7 @@ curl -X POST https://your-render-service.onrender.com/api/v1/auth/register/ \
 ### Login
 
 ```bash
-curl -X POST https://your-render-service.onrender.com/api/v1/auth/login/ \
+curl -X POST https://blogify-api-0ghm.onrender.com/api/v1/auth/login/ \
   -H "Content-Type: application/json" \
   -d '{"email": "reader@example.com", "password": "StrongPassword123!"}'
 ```
@@ -436,7 +493,7 @@ curl -X POST https://your-render-service.onrender.com/api/v1/auth/login/ \
 ### Create Post
 
 ```bash
-curl -X POST https://your-render-service.onrender.com/api/v1/posts/ \
+curl -X POST https://blogify-api-0ghm.onrender.com/api/v1/posts/ \
   -H "Authorization: Bearer <access_token>" \
   -F "title=Shipping a Django API" \
   -F "excerpt=Notes from building a production-ready backend." \
@@ -448,7 +505,7 @@ curl -X POST https://your-render-service.onrender.com/api/v1/posts/ \
 ### List Posts
 
 ```bash
-curl "https://your-render-service.onrender.com/api/v1/posts/?search=django&ordering=newest&page=1&page_size=10"
+curl "https://blogify-api-0ghm.onrender.com/api/v1/posts/?search=django&ordering=newest&page=1&page_size=10"
 ```
 
 ## User Manual
@@ -476,7 +533,7 @@ Recommended screenshots:
 Set a single API base URL:
 
 ```js
-const API_BASE_URL = "https://your-render-service.onrender.com";
+const API_BASE_URL = "https://blogify-api-0ghm.onrender.com";
 ```
 
 <details>
@@ -508,7 +565,7 @@ async function listPosts() {
 ```js
 import axios from "axios";
 
-const api = axios.create({ baseURL: "https://your-render-service.onrender.com" });
+const api = axios.create({ baseURL: "https://blogify-api-0ghm.onrender.com" });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
@@ -533,7 +590,7 @@ export function PostList() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("https://your-render-service.onrender.com/api/v1/posts/")
+    fetch("https://blogify-api-0ghm.onrender.com/api/v1/posts/")
       .then((response) => response.json())
       .then((payload) => setPosts(payload.data));
   }, []);
@@ -567,7 +624,7 @@ import { ref, onMounted } from "vue";
 export function usePosts() {
   const posts = ref([]);
   onMounted(async () => {
-    const response = await fetch("https://your-render-service.onrender.com/api/v1/posts/");
+    const response = await fetch("https://blogify-api-0ghm.onrender.com/api/v1/posts/");
     posts.value = (await response.json()).data;
   });
   return { posts };
@@ -581,7 +638,7 @@ export function usePosts() {
 
 ```ts
 this.http
-  .get<{ data: unknown[] }>("https://your-render-service.onrender.com/api/v1/posts/")
+  .get<{ data: unknown[] }>("https://blogify-api-0ghm.onrender.com/api/v1/posts/")
   .subscribe((payload) => {
     this.posts = payload.data;
   });
@@ -594,7 +651,7 @@ this.http
 
 ```dart
 final response = await http.get(
-  Uri.parse("https://your-render-service.onrender.com/api/v1/posts/"),
+  Uri.parse("https://blogify-api-0ghm.onrender.com/api/v1/posts/"),
 );
 final payload = jsonDecode(response.body);
 ```
@@ -606,7 +663,7 @@ final payload = jsonDecode(response.body);
 
 ```kotlin
 val request = Request.Builder()
-    .url("https://your-render-service.onrender.com/api/v1/posts/")
+    .url("https://blogify-api-0ghm.onrender.com/api/v1/posts/")
     .get()
     .build()
 ```
@@ -617,7 +674,7 @@ val request = Request.Builder()
 <summary>Swift (iOS)</summary>
 
 ```swift
-let url = URL(string: "https://your-render-service.onrender.com/api/v1/posts/")!
+let url = URL(string: "https://blogify-api-0ghm.onrender.com/api/v1/posts/")!
 let (data, _) = try await URLSession.shared.data(from: url)
 ```
 
@@ -629,7 +686,7 @@ let (data, _) = try await URLSession.shared.data(from: url)
 ```python
 import requests
 
-response = requests.get("https://your-render-service.onrender.com/api/v1/posts/")
+response = requests.get("https://blogify-api-0ghm.onrender.com/api/v1/posts/")
 print(response.json())
 ```
 
@@ -639,7 +696,7 @@ print(response.json())
 <summary>Node.js</summary>
 
 ```js
-const response = await fetch("https://your-render-service.onrender.com/api/v1/posts/");
+const response = await fetch("https://blogify-api-0ghm.onrender.com/api/v1/posts/");
 const payload = await response.json();
 ```
 
