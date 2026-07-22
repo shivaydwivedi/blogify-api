@@ -21,6 +21,8 @@
 | **Health Check** | https://blogify-api-0ghm.onrender.com/health/|
 | **Django Admin** |https://blogify-api-0ghm.onrender.com/admin/ |
 
+
+
 ## Overview
 
 Blogify API is a backend-only blogging platform designed to demonstrate production-grade API engineering. It provides account registration, JWT authentication, email verification, post publishing, categories, tags, comments, likes, bookmarks, notifications, admin management, OpenAPI documentation, background jobs, and deployment-ready infrastructure.
