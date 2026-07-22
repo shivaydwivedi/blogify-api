@@ -15,13 +15,11 @@
 
 | Resource | URL |
 | --- | --- |
-| Production API | `https://your-render-service.onrender.com/` |
-| Swagger UI | `https://your-render-service.onrender.com/api/v1/docs/` |
-| OpenAPI Schema | `https://your-render-service.onrender.com/api/v1/schema/` |
-| Health Check | `https://your-render-service.onrender.com/health/` |
-| Django Admin | `https://your-render-service.onrender.com/admin/` |
-
-Replace `your-render-service.onrender.com` with the deployed Render service hostname.
+| **Production API** | `https://blogify-api-0ghm.onrender.com/` |
+| **Swagger UI** | `https://blogify-api-0ghm.onrender.com/api/v1/docs/` |
+| **OpenAPI Schema** | `https://blogify-api-0ghm.onrender.com/api/v1/schema/` |
+| **Health Check** | `https://blogify-api-0ghm.onrender.com/health/` |
+| **Django Admin** | `https://blogify-api-0ghm.onrender.com/admin/` |
 
 ## Overview
 
