@@ -7,7 +7,7 @@
   "variable": [
     {
       "key": "base_url",
-      "value": "https://<render-domain>"
+      "value": "https://your-render-service.onrender.com"
     },
     {
       "key": "access_token",

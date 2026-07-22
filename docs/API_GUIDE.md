@@ -5,7 +5,7 @@
 Use the deployed Render URL in production:
 
 ```text
-https://<render-domain>
+https://your-render-service.onrender.com
 ```
 
 Local development defaults to:

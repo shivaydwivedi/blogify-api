@@ -429,7 +429,7 @@ Each phase should leave the system in a working state. Foundational shortcuts ta
 
 ## 18. Git Workflow
 
-Development should happen on short-lived feature branches. Branch names should describe the work clearly and may use prefixes such as `feature/`, `fix/`, `docs/`, `chore/`, or the repository's Codex branch prefix when work is performed through Codex.
+Development should happen on short-lived feature branches. Branch names should describe the work clearly and may use prefixes such as `feature/`, `fix/`, `docs/`, or `chore/`.
 
 Commit messages should be concise, imperative, and scoped when useful. A conventional format such as `type(scope): summary` is preferred because it supports readable history and future automation.
 

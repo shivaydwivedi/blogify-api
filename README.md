@@ -9,19 +9,19 @@
 ![Redis](https://img.shields.io/badge/Redis-Upstash-DC382D?logo=redis&logoColor=white)
 ![Docker](https://img.shields.io/badge/Docker-supported-2496ED?logo=docker&logoColor=white)
 ![Deployment](https://img.shields.io/badge/Render-ready-46E3B7)
-![License](https://img.shields.io/badge/License-not%20specified-lightgrey)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ## Live Links
 
 | Resource | URL |
 | --- | --- |
-| Production API | `https://<render-domain>/` |
-| Swagger UI | `https://<render-domain>/api/v1/docs/` |
-| OpenAPI Schema | `https://<render-domain>/api/v1/schema/` |
-| Health Check | `https://<render-domain>/health/` |
-| Django Admin | `https://<render-domain>/admin/` |
+| Production API | `https://your-render-service.onrender.com/` |
+| Swagger UI | `https://your-render-service.onrender.com/api/v1/docs/` |
+| OpenAPI Schema | `https://your-render-service.onrender.com/api/v1/schema/` |
+| Health Check | `https://your-render-service.onrender.com/health/` |
+| Django Admin | `https://your-render-service.onrender.com/admin/` |
 
-> Replace `<render-domain>` with the deployed Render service hostname.
+Replace `your-render-service.onrender.com` with the deployed Render service hostname.
 
 ## Overview
 
@@ -274,7 +274,7 @@ docker compose exec web celery -A config call apps.core.tasks.background_ping
 | `EMAIL_HOST_PASSWORD` | SMTP password | Yes for email | empty | Brevo SMTP key |
 | `EMAIL_USE_TLS` | SMTP TLS toggle | No | `True` | `True` |
 | `DJANGO_DEFAULT_FROM_EMAIL` | Sender email | Recommended | `noreply@blogify.local` | `noreply@example.com` |
-| `BLOGIFY_API_BASE_URL` | Base URL used in generated links | Recommended | `http://localhost:8000` | `https://<render-domain>` |
+| `BLOGIFY_API_BASE_URL` | Base URL used in generated links | Recommended | `http://localhost:8000` | `https://your-render-service.onrender.com` |
 | `EMAIL_VERIFICATION_TOKEN_MAX_AGE_SECONDS` | Verification token lifetime | No | `86400` | `86400` |
 | `DJANGO_SUPERUSER_USERNAME` | Optional startup superuser username | No | empty | `admin` |
 | `DJANGO_SUPERUSER_EMAIL` | Optional startup superuser email | No | empty | `admin@example.com` |
@@ -413,7 +413,7 @@ Supported post query parameters include `category`, `tag`, `author`, `status`, `
 ### Register
 
 ```bash
-curl -X POST https://<render-domain>/api/v1/auth/register/ \
+curl -X POST https://your-render-service.onrender.com/api/v1/auth/register/ \
   -H "Content-Type: application/json" \
   -d '{
     "email": "reader@example.com",
@@ -428,7 +428,7 @@ curl -X POST https://<render-domain>/api/v1/auth/register/ \
 ### Login
 
 ```bash
-curl -X POST https://<render-domain>/api/v1/auth/login/ \
+curl -X POST https://your-render-service.onrender.com/api/v1/auth/login/ \
   -H "Content-Type: application/json" \
   -d '{"email": "reader@example.com", "password": "StrongPassword123!"}'
 ```
@@ -436,7 +436,7 @@ curl -X POST https://<render-domain>/api/v1/auth/login/ \
 ### Create Post
 
 ```bash
-curl -X POST https://<render-domain>/api/v1/posts/ \
+curl -X POST https://your-render-service.onrender.com/api/v1/posts/ \
   -H "Authorization: Bearer <access_token>" \
   -F "title=Shipping a Django API" \
   -F "excerpt=Notes from building a production-ready backend." \
@@ -448,7 +448,7 @@ curl -X POST https://<render-domain>/api/v1/posts/ \
 ### List Posts
 
 ```bash
-curl "https://<render-domain>/api/v1/posts/?search=django&ordering=newest&page=1&page_size=10"
+curl "https://your-render-service.onrender.com/api/v1/posts/?search=django&ordering=newest&page=1&page_size=10"
 ```
 
 ## User Manual
@@ -464,7 +464,7 @@ An API is a way for software applications to communicate with each other. Blogif
 
 Image uploads use multipart form data. In Swagger, choose the post create or update endpoint and upload the file through the `featured_image` field.
 
-Screenshot placeholders:
+Recommended screenshots:
 
 - `docs/screenshots/swagger.png` - Swagger UI.
 - `docs/screenshots/admin.png` - Django Admin.
@@ -476,7 +476,7 @@ Screenshot placeholders:
 Set a single API base URL:
 
 ```js
-const API_BASE_URL = "https://<render-domain>";
+const API_BASE_URL = "https://your-render-service.onrender.com";
 ```
 
 <details>
@@ -508,7 +508,7 @@ async function listPosts() {
 ```js
 import axios from "axios";
 
-const api = axios.create({ baseURL: "https://<render-domain>" });
+const api = axios.create({ baseURL: "https://your-render-service.onrender.com" });
 
 api.interceptors.request.use((config) => {
   const token = localStorage.getItem("accessToken");
@@ -533,7 +533,7 @@ export function PostList() {
   const [posts, setPosts] = useState([]);
 
   useEffect(() => {
-    fetch("https://<render-domain>/api/v1/posts/")
+    fetch("https://your-render-service.onrender.com/api/v1/posts/")
       .then((response) => response.json())
       .then((payload) => setPosts(payload.data));
   }, []);
@@ -567,7 +567,7 @@ import { ref, onMounted } from "vue";
 export function usePosts() {
   const posts = ref([]);
   onMounted(async () => {
-    const response = await fetch("https://<render-domain>/api/v1/posts/");
+    const response = await fetch("https://your-render-service.onrender.com/api/v1/posts/");
     posts.value = (await response.json()).data;
   });
   return { posts };
@@ -581,7 +581,7 @@ export function usePosts() {
 
 ```ts
 this.http
-  .get<{ data: unknown[] }>("https://<render-domain>/api/v1/posts/")
+  .get<{ data: unknown[] }>("https://your-render-service.onrender.com/api/v1/posts/")
   .subscribe((payload) => {
     this.posts = payload.data;
   });
@@ -594,7 +594,7 @@ this.http
 
 ```dart
 final response = await http.get(
-  Uri.parse("https://<render-domain>/api/v1/posts/"),
+  Uri.parse("https://your-render-service.onrender.com/api/v1/posts/"),
 );
 final payload = jsonDecode(response.body);
 ```
@@ -606,7 +606,7 @@ final payload = jsonDecode(response.body);
 
 ```kotlin
 val request = Request.Builder()
-    .url("https://<render-domain>/api/v1/posts/")
+    .url("https://your-render-service.onrender.com/api/v1/posts/")
     .get()
     .build()
 ```
@@ -617,7 +617,7 @@ val request = Request.Builder()
 <summary>Swift (iOS)</summary>
 
 ```swift
-let url = URL(string: "https://<render-domain>/api/v1/posts/")!
+let url = URL(string: "https://your-render-service.onrender.com/api/v1/posts/")!
 let (data, _) = try await URLSession.shared.data(from: url)
 ```
 
@@ -629,7 +629,7 @@ let (data, _) = try await URLSession.shared.data(from: url)
 ```python
 import requests
 
-response = requests.get("https://<render-domain>/api/v1/posts/")
+response = requests.get("https://your-render-service.onrender.com/api/v1/posts/")
 print(response.json())
 ```
 
@@ -639,7 +639,7 @@ print(response.json())
 <summary>Node.js</summary>
 
 ```js
-const response = await fetch("https://<render-domain>/api/v1/posts/");
+const response = await fetch("https://your-render-service.onrender.com/api/v1/posts/");
 const payload = await response.json();
 ```
 
@@ -770,10 +770,15 @@ See [docs/CONTRIBUTING.md](docs/CONTRIBUTING.md).
 
 ## License
 
-The repository contains a `LICENSE` file, but it is currently empty. Choose and publish a license before treating the project as open source.
+This project is licensed under the [MIT License](LICENSE).
 
 ## Contact
 
+<<<<<<< HEAD
 - GitHub: [`https://github.com/<your-username>](https://github.com/shivaydwivedi)`
 - LinkedIn: `www.linkedin.com/in/shivay-dwivedi-54785b304`
 - Email: `shivayforwork@gmail.com`
+=======
+- Maintainer: Shivay Dwivedi
+- Project issues and discussions can be managed through the repository hosting platform.
+>>>>>>> 4e633f0 (docs: adding License)
